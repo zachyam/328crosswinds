@@ -91,7 +91,7 @@ import swimsuitDryer from 'src/assets/images/products/outdoor/swimsuitDryer.jpg'
 import foosball from 'src/assets/images/products/outdoor/foosball.jpg';
 import connectfour from 'src/assets/images/products/outdoor/connectfour.jpg';
 import cornhole from 'src/assets/images/products/outdoor/cornhole.jpg';
-import outdoorSideTable from 'src/assets/images/products/outdoor/sideTable.jpg';
+import outdoorSideTable from 'src/assets/images/products/outdoor/sidetable.jpg';
 import pendantlight from 'src/assets/images/products/outdoor/pendantlight.jpg';
 import ceilingfan from 'src/assets/images/products/outdoor/ceilingfan.jpg';
 import artificialplant from 'src/assets/images/products/outdoor/artificialplant.jpg';
