@@ -1,0 +1,45 @@
+ <property name="backupManager.enableGenericConsumption" value="true"/>
+    <property name="efsStartupManager.enableGenericConsumption" value="true"/>
+    <property name="flip.admin.entityFeaturesController.enableGenericConsumption" value="true"/>
+    <property name="flipShutdownManager.enableGenericConsumption" value="true"/>
+    <property name="flip.backupManager.kafkaHooks.enableGenericConsumption" value="true"/>
+    <property name="kafkaConsumersStartupManager.enableGenericConsumption" value="true"/>
+    <property name="PurgeDataEventsProcessor.enableGenericConsumption" value="true"/>
+    <property name="genericFlipEventV2TrackingProducer.trackingProducer.metadataBrokerList" value="${kafka.queuing.metadata.broker.list}"/>
+    <property name="genericFlipEventV2TrackingProducer.trackingProducer.queueBufferingMaxMs" value="2000"/>
+    <property name="genericFlipEventV2TrackingProducer.trackingProducer.useLegacyPartitioning" value="false"/>
+    <property name="genericFlipEventV2TrackingProducer.trackingProducer.partitionerClass" value="com.linkedin.flip.efs.FlipEventPartitioner"/>
+    <!-- Timeout value lower than default (20000ms) suggested by kafka to reduce
+         tracking producer's stop time -->
+    <property name="genericFlipEventV2TrackingProducer.trackingProducer.requestTimeoutMs" value="10000"/>
+    <property name="genericEntityFeaturesStores.genericEntityFeaturesStoreList">
+      <instanceDescriptors>
+        <instance>
+          <entry key="class" value="com.linkedin.beam.feed.ingestion.FeedActivityFeatures"/>
+          <entry key="efs.maxCacheSize" value="36000000"/>
+          <entry key="efs.dataStorePathPrefix" value="${flip.entityfeaturesstores.defaultDataStorePathPrefix}"/>
+          <entry key="efs.numAdditionalExpectedBloomFilterKeys" value="100000000"/>
+          <entry key="efs.bloomFilterEnabled" value="true"/>
+          <entry key="efs.enableGeneration" value="true"/>
+          <entry key="efs.dataStoreTtlSeconds" value="${flip.storage.defaultEfsTTL}"/>
+          <entry key="efs.skipBloomFilterCheckForWrites" value="true"/>
+          <!-- TODO: remove this after setup backup -->
+          <entry key="efs.allowMissingDbOnRestoreDeadline" value="04/01/2024"/>
+        </instance>
+      </instanceDescriptors>
+    </property>
+
+    <!-- High Priority Generic Consumer -->
+    <property name="flip.high-priority-generic-topic-name" value="GenericFlipEventV2"/>
+    <property name="flip.highPriorityConsumer.generic.topic" value="${flip.high-priority-generic-topic-name}"/>
+    <property name="flip.highPriorityConsumer.generic.enabled" value="true"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.clusterGroup" value="queuing"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.consumer.avroCodec" value="FAST_CACHE"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.clientId" value="${flip.high-priority-generic-topic-name}"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.groupId" value="${flip.groupId}"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.autoOffsetReset" value="latest"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.maxPollRecords" value="500"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.maxPartitionFetchBytes" value="1048576"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.receiveBufferBytes" value="1048576"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.deserializationMode" value="SPECIFIC"/>
+    <property name="flip.highPriorityConsumer.generic.ringBufferWriter.kafkaConsumer.liKafkaConsumerHandler.consumer.enableAutoCommit" value="${flip.consumers.enableAutoCommit}"/>
