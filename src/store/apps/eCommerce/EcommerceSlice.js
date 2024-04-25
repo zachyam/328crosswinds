@@ -1,6 +1,8 @@
 import axios from '../../../utils/axios';
 import { filter, map } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set } from "firebase/database";
 
 const API_URL = '/api/data/eCommerce/ProductsData';
 
@@ -19,6 +21,17 @@ const initialState = {
   },
   error: ''
 };
+
+// See: https://firebase.google.com/docs/web/learn-more#config-object
+const firebaseConfig = {
+  databaseURL: "https://reno-eb105-default-rtdb.firebaseio.com"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Realtime Database and get a reference to the service
+const database = getDatabase(app);
 
 export const EcommerceSlice = createSlice({
   name: 'ecommerce',
@@ -125,9 +138,20 @@ export const {
   sortByColor,
 } = EcommerceSlice.actions;
 
+async function storeUserIPInformation() {
+  const currentDateTime = new Date().toISOString();
+  const response = await fetch('https://api.ipify.org?format=json');
+  const data = await response.json();
+  set(ref(database, 'ipAddress/'), {
+    timeStamp: currentDateTime,
+    ipAddress: data["ip"]
+  });
+}
+
 export const fetchProducts = () => async (dispatch) => {
   try {
     const response = await axios.get(`${API_URL}`);
+    storeUserIPInformation();
     dispatch(getProducts(response.data));
   } catch (error) {
     dispatch(hasError(error));
