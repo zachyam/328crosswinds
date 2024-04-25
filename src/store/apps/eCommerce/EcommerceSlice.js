@@ -142,7 +142,7 @@ async function storeUserIPInformation() {
   const currentDateTime = new Date().toISOString();
   const response = await fetch('https://api.ipify.org?format=json');
   const data = await response.json();
-  set(ref(database, 'ipAddress/'), {
+  set(ref(database, 'ipAddress/' + Date.now()), {
     timeStamp: currentDateTime,
     ipAddress: data["ip"]
   });
